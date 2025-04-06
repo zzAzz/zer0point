@@ -1,0 +1,15 @@
+streamlit==1.44.1
+streamlit_extras==0.6.0
+streamlit_js_eval==0.1.7
+emoji==2.14.1
+extra_streamlit_components==0.1.71
+autotiktokenizer==0.2.2
+huggingface-hub==0.30.1
+openpyxl==3.1.5
+pandas==2.2.3
+pillow==11.1.0
+python-dotenv==1.1.0
+watchdog==6.0.0
+pyyaml==6.0.2
+streamlit_code_editor==0.1.22
+yamllint==1.37.0

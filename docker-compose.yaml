@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  robotf-lllm-tools:
+    container_name: robotf-llm-tools
+    platform: linux/arm64 ## Change to your platform
+    build: "."
+    command:
+      ["streamlit", "run", "RoboTF_LLM_Tools.py", "--server.port", "8969"]
+    environment:
+      - HF_TOKEN=<huggingface token>
+      - MODELS_DIR=<localai models dir path>
+    ports:
+      - 8969:8969
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
