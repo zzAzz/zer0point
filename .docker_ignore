@@ -1,0 +1,13 @@
+./gpu_test_data
+./models
+Taskfile.yml
+Dockerfile
+docker-compose.yaml
+./scripts
+.ppre-commit-config.yaml
+Brewfile
+Brewfile.lock.json
+./.linters
+./.github
+.env_example
+*.wav

@@ -1,0 +1,34 @@
+backend: llama-cpp-grpc
+context_size: 16384
+name: (model name for LocalAI)
+f16: true
+gpu_layers: 60
+no_kv_offloading: true
+flash_attention: true
+parameters:
+  model: (model file location and name)
+roles:
+  assistant: "Assistant:"
+  assistant_function_call: "Function Call:"
+  function: "Function Result:"
+  system: "System:"
+  user: "User:"
+template:
+  chat_message: "<s>[INST] {{.Input}} [/INST]
+
+    </s>
+
+    "
+  chat: "<s>[INST] {{.Input}} [/INST]
+
+    </s>
+
+    "
+  completion: "{{.Input}}
+
+    "
+stopwords:
+  - <|im_end|>
+  - <dummy32000>
+  - <|eot_id|>
+  - </s>
