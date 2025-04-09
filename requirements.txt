@@ -1,4 +1,5 @@
 streamlit==1.44.1
+streamlit-autorefresh==1.0.1
 streamlit_extras==0.6.0
 streamlit_js_eval==0.1.7
 emoji==2.14.1
@@ -8,6 +9,7 @@ huggingface-hub==0.30.1
 openpyxl==3.1.5
 pandas==2.2.3
 pillow==11.1.0
+psutil==7.0.0
 python-dotenv==1.1.0
 watchdog==6.0.0
 pyyaml==6.0.2

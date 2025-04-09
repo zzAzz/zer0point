@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from yamllint.config import YamlLintConfig
 from yamllint import linter
 from code_editor import code_editor
+from PIL import Image
 
 # Uncomment to use locally
 load_dotenv('.env')
@@ -34,7 +35,16 @@ def main():
         return problems
 
     st.set_page_config(layout="wide")
-    st.logo("images/robotf-small.png", size="large", link="https://robotf.ai", icon_image="images/robotf-small.png")
+    
+    try:
+        image = Image.open("images/model-editor.jpg")
+        st.image(image, width=400)
+    except FileNotFoundError as e:
+        st.error(f"The image file 'model-editor.jpg' was not found: {e}")
+    except Exception as e:
+        st.error(f"Failed to load image: {e}")
+        
+    st.logo("images/robotf-small.png", size="large", icon_image="images/robotf-small.png")
     
     st.sidebar.title('Model Configurations')
 
@@ -47,11 +57,10 @@ def main():
         st.session_state.code_content = ""
         st.rerun()
 
-    # selected_model = st.sidebar.selectbox('Select a model configuration:', [''] + model_configs, on_change=handle_model_change)
     selected_model = st.sidebar.selectbox(
-    'Select a model configuration:',
-    [''] + model_configs,
-    key='selected_model'
+        'Select a model configuration:',
+        [''] + model_configs,
+        key='selected_model'
     )
 
     new_file_name = st.sidebar.text_input("New File Name (without .yaml)")
@@ -131,7 +140,7 @@ def main():
         
         st.markdown("Please see https://localai.io/advanced/ for more configuration values")
         
-        st.markdown(f"Hit command-enter (ctrl-enter on Windows) then save to save files")
+        st.markdown(f"Hit the Run button in the editor to save changes to server")
 
         with open('custom_configs/custom_buttons.json') as json_button_file:  # Updated path
             custom_buttons = json.load(json_button_file)
@@ -143,7 +152,6 @@ def main():
             css_text = css_file.read()
 
         comp_props = {"css": css_text, "globalCSS": ":root {\n  --streamlit-dark-font-family: monospace;\n}"}
-
 
         # Use a dynamic key that includes the selected model
         code_key = f"unique_key_yaml_editor_{selected_model}"
@@ -158,21 +166,19 @@ def main():
             key=code_key
         )
 
-
-        # code = response_dict['text'] if response_dict['type'] == 'submit' else st.session_state.code_content
-            # Determine updated code from the editor
-        code = (
-            response_dict['text']
-            if response_dict['type'] == 'submit'
-            else st.session_state.code_content
-        )
-
-        if st.button('Save YAML'):
-            with open(os.path.join(MODELS_PATH, selected_model), 'w') as file:
-                file.write(code)
-            st.success(f"The model configuration '{selected_model}' has been saved.")
-            st.session_state.code_content = code
-            st.rerun()  # Refresh the app to reload the saved content
+        # Determine updated code from the editor
+        if response_dict.get('type') == 'submit':
+            code = response_dict['text']
+            try:
+                with open(os.path.join(MODELS_PATH, selected_model), 'w') as file:
+                    file.write(code)
+                st.success(f"The model configuration '{selected_model}' has been saved.")
+                st.session_state.code_content = code
+                st.rerun()  # Refresh the app to reload the saved content
+            except Exception as e:
+                st.error(f"Error saving file: {str(e)}")
+        else:
+            code = st.session_state.code_content
 
         if st.button('Lint YAML'):
             lint_problems = lint_yaml(code)

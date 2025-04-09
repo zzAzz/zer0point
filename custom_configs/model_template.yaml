@@ -1,45 +1,34 @@
-# See https://localai.io/advanced/ for more information
----
 backend: llama-cpp-grpc
 context_size: 16384
-name: <name-of-model>
-nmap: true
-numa: false
+name: (model name for LocalAI)
 f16: true
-gpu_layers: 81
-no_kv_offloading: false
+gpu_layers: 60
+no_kv_offloading: true
 flash_attention: true
 parameters:
-  temperature: 0.2
-  top_k: 80
-  top_p: 0.7
-  model: <model-file>
+  model: (model file location and name)
 roles:
-  assistant: "Assitant:"
+  assistant: "Assistant:"
   assistant_function_call: "Function Call:"
   function: "Function Result:"
   system: "System:"
   user: "User:"
-# system_prompt:
-#   You are a skilled and helpful assistant, below is a conversation, please
-#   respond with the next message and do not ask follow-up questions
 template:
-  template:
-    chat_message: |
-      [INST]
-      {{if .SystemPrompt}}<<SYS>>{{.SystemPrompt}}<</SYS>>{{end}}
-      {{if .Input}}{{.Input}}{{end}}
-      [/INST]
-    chat: |
-      [INST]
-      {{if .SystemPrompt}}<<SYS>>{{.SystemPrompt}}<</SYS>>{{end}}
-      {{if .Input}}{{.Input}}{{end}}
-      [/INST]
-    completion: |
-      {{.Input}}
+  chat_message: "<s>[INST] {{.Input}} [/INST]
 
+    </s>
+
+    "
+  chat: "<s>[INST] {{.Input}} [/INST]
+
+    </s>
+
+    "
+  completion: "{{.Input}}
+
+    "
 stopwords:
   - <|im_end|>
   - <dummy32000>
-  - "<|eot_id|>"
+  - <|eot_id|>
   - </s>

@@ -14,7 +14,7 @@ def main():
     except Exception as e:
         st.error(f"Failed to load image: {e}")
 
-    st.logo("images/robotf-small.png", size="large", link="https://robotf.ai", icon_image="images/robotf-small.png")
+    st.logo("images/robotf-small.png", size="large", icon_image="images/robotf-small.png")
 
     # Title and description
     st.title("RoboTF LLM Token Estimator")

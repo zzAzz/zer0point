@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 RUN apt-get update --fix-missing && \
-    apt-get install -y --fix-missing git build-essential software-properties-common zip && \
+    apt-get install -y --fix-missing git build-essential docker.io software-properties-common zip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

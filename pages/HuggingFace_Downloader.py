@@ -77,10 +77,6 @@ def get_repository_description(repo, repo_type):
 def display_repository_info(repo, repo_type):
     """Display repository information"""
     st.subheader(repo.modelId if repo_type == "model" else repo.id)
-    if hasattr(repo, 'author'):
-        st.write(f"👤 Author: {repo.author}")
-    description = get_repository_description(repo, repo_type)
-    st.write(f"📝 Description: {description or 'No description provided'}")
     if hasattr(repo, 'downloads'):
         st.write(f"📊 Downloads: {repo.downloads}")
     st.markdown("---")
@@ -95,6 +91,9 @@ def display_paginated_results(results, page, page_size, repo_type):
         display_repository_info(repo, repo_type)
 
 def main():
+    st.set_page_config(layout="wide")
+    st.logo("images/robotf-small.png", size="large", icon_image="images/robotf-small.png")
+    
     st.title("Hugging Face Hub Search & Download")
     
     # Search filters
@@ -177,5 +176,28 @@ def main():
             else:
                 st.warning("No files found in repository.")
 
+    st.divider()
+
+    # Social Media Icons and Links
+    social_media_links = """
+    [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@RoboTFAI)
+    [![Reddit](https://img.shields.io/badge/Reddit-FF4500?style=for-the-badge&logo=reddit&logoColor=white)](https://www.reddit.com/user/RoboTF-AI/)
+    [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kkacsh321)
+    [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/RoboTF)
+    [![X](https://img.shields.io/badge/X-1DA1F2?style=for-the-badge&logo=x&logoColor=white)](https://x.com/RoboTF_AI)
+    [![Email](https://img.shields.io/badge/Email-008000?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEgMTAwIj48cG9seWdvbiBwb2ludHM9IjUwLDAgMTAwLDUwIDUwLDEwMCAwLDUwIiBmaWxsPSIjMDA4MDBGIi8+PC9zdmc+&logoColor=white)](mailto:robot@robotf.ai)
+    [![Website](https://img.shields.io/badge/Website-00B4D8?style=for-the-badge&logo=web&logoColor=white)](https://robotf.ai)
+    """
+    st.markdown(social_media_links.replace('\n', ' '), unsafe_allow_html=True)
+    # Use Local CSS File
+    def local_css(file_name):
+        with open(file_name) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+    local_css("custom_configs/style.css")
+
+    # Add footer with copyright information
+    st.write("Copyright © 2025 RoboTF.ai. All Rights Reserved.")
+    
 if __name__ == "__main__":
     main()

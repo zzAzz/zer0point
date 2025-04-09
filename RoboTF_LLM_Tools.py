@@ -1,23 +1,53 @@
 import streamlit as st
 from PIL import Image
 
+def get_server_ip():
+    host = st.context.headers.get("host", None)
+    
+    if host:
+        return host.split(':')[0]  # Remove port if present
+    
+    # Fallback to local IP
+    try:
+        return socket.gethostbyname(socket.gethostname())
+    except Exception:
+        return 'localhost'
+    
 def main():
     # Streamlit UI setup
     st.set_page_config(layout="wide")
     st.title("RoboTF LLM Tools for LocalAI usage!")
+    st.logo("images/robotf-small.png", size="large", icon_image="images/robotf-small.png")
 
     try:
-        image = Image.open("images/robot_gpu.png")
-        st.image(image, width=600, caption="RoboTF LLM Tools")
+        image = Image.open("images/robotf-tools.jpg")
+        st.image(image, width=300, caption="RoboTF LLM Tools")
     except FileNotFoundError as e:
-        st.error(f"The image file 'robot_gpu.png' was not found: {e}")
+        st.error(f"The image file 'robot-tools.jpg' was not found: {e}")
     except Exception as e:
         st.error(f"Failed to load image: {e}")
         
     st.write("What does this suite of tools do so far:")
+    st.write("  * Docker Command Runner")
+    st.write("  * Docker Dashboard")
+    st.write("  * HuggingFace Downloader")
     st.write("  * LLM Token Estimator for open source models")
     st.write("  * Model Config Editor for LocalAI")
     st.write("Choose your selection from the left hand menu")
+    
+    st.write("Other Application Links in RoboTF AI Suite (must be running)")
+    server_ip = get_server_ip()
+    application_links = f"""
+    [LocalAI](http://{server_ip}:8080) | 
+    [ComfyUI](http://{server_ip}:8188) | 
+    [Open WebUI](http://{server_ip}:3000) | 
+    [Flowise](http://{server_ip}:3001) | 
+    [n8n](http://{server_ip}:5678) | 
+    [Postgres](http://{server_ip}:5432) | 
+    [ChromaDB](http://{server_ip}:8000) | 
+    [Unstructured API](http://{server_ip}:8003)
+    """
+    st.markdown(application_links.replace('\n', ' '), unsafe_allow_html=True)
     
     st.divider()
 
